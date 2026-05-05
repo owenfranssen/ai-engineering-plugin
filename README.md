@@ -240,6 +240,8 @@ Project-agnostic code writer. Follows TDD (test first), reads existing code befo
 
 Structures context files (CLAUDE.md, AGENTS.md) and memory for multi-session AI-assisted work. Use when agent output quality degrades — wrong patterns, hallucinated APIs, ignoring conventions. Establishes the conventions that `write-plan` captures as `project_context` and passes to every agent.
 
+For a full guide to setting up context from scratch — CLAUDE.md structure, doc splitting, OpenAPI/event catalog patterns, inline annotation taxonomy — see [context-engineering-quickstart](https://github.com/owenfranssen/context-engineering-quickstart).
+
 ### `documentation-and-adrs`
 
 Writes ADRs (Architecture Decision Records) when making architectural choices. Captures the decision, alternatives considered, and rationale — so future agents don't re-litigate settled decisions. Use when a design decision has come up twice or when you find unexplained code.
