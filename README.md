@@ -74,7 +74,7 @@ The result: you get parallel execution speed without trusting any single agent t
 | `code` | Project-agnostic code writer — TDD, quality gates, read-before-write |
 | `context-engineering` | Structure and load project context for AI-assisted sessions |
 | `documentation-and-adrs` | Write and maintain ADRs and technical documentation |
-| `source-driven` | Verify framework/library patterns against official docs before writing code |
+| `source-driven` | Not included — use [Addy Osmani's original](https://github.com/addyosmani/agent-skills/blob/main/skills/source-driven-development/SKILL.md) directly |
 
 ## Slash Commands
 
@@ -83,7 +83,7 @@ The result: you get parallel execution speed without trusting any single agent t
 | `/checkpoint` | Save current task progress to `.project/current-task.md` |
 | `/complete-task` | Archive a completed task |
 | `/restore` | Resume session from `.project/` state files |
-| `/source-driven` | Check framework/library docs before implementing a pattern |
+| `/source-driven` | Not included — see [addyosmani/agent-skills](https://github.com/addyosmani/agent-skills) |
 
 ---
 
@@ -246,4 +246,4 @@ Writes ADRs (Architecture Decision Records) when making architectural choices. C
 
 ### `source-driven`
 
-Verifies framework and library usage against official docs for the installed version before writing code. LLM training data goes stale; this skill enforces a "check the source" discipline. Use when implementing any version-specific API.
+Not included in this repo. Use [Addy Osmani's source-driven-development](https://github.com/addyosmani/agent-skills/blob/main/skills/source-driven-development/SKILL.md) directly — it's the more complete version and worth reading.
