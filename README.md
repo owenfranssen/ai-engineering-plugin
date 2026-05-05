@@ -2,7 +2,11 @@
 
 A collection of skills for AI-assisted engineering — built around **flow**, an orchestrator-plus-agents pattern for implementing features with parallel autonomous agents, zero trust in agent self-reporting, and per-task verification before merge.
 
-Skills are plain markdown files. They're packaged as a [Claude Code](https://claude.ai/code) plugin for one-line install, but the files work with any AI tool that accepts system prompt or instruction files — Cursor rules, Windsurf instructions, Copilot prompts, or plain context passed to any model.
+Skills are plain markdown files. They're packaged as a [Claude Code](https://claude.ai/code) plugin for one-line install, but the files work with any AI tool that accepts system prompt or instruction files — Cursor rules, Copilot instructions, Gemini context, or plain context passed to any model.
+
+→ [Quick start](#quick-start) · [Installation](#installation) · [Skills](#skills) · [flow in practice](#flow-in-practice)
+
+---
 
 ## The core idea: flow
 
@@ -85,7 +89,7 @@ The result: you get parallel execution speed without trusting any single agent t
 
 ## Quick start
 
-### Using flow
+### flow
 
 ```
 /flow #123                  ← implement a GitHub issue
@@ -97,7 +101,7 @@ The result: you get parallel execution speed without trusting any single agent t
 
 Flow writes plan state to `~/.flow/state/{id}/` — never committed to the repo.
 
-### Using write-plan standalone
+### write-plan standalone
 
 ```
 /write-plan #123            ← plan from a GitHub issue
@@ -111,15 +115,68 @@ Produces `~/.flow/state/{id}/plan.md` for review before dispatch.
 
 ## Installation
 
-```bash
-claude plugin add owenfranssen/ai-engineering-plugin
-```
+### Claude Code
 
-Or to install at user scope (survives across all repos):
+One-line install at user scope — available across all your projects:
 
 ```bash
 claude plugin add owenfranssen/ai-engineering-plugin --scope user
 ```
+
+Or project-scoped (checked into the repo):
+
+```bash
+claude plugin add owenfranssen/ai-engineering-plugin
+```
+
+Skills are invoked with `/flow`, `/write-plan`, `/investigate`, etc.
+
+### VS Code + GitHub Copilot
+
+Copy the skill content you want into `.github/copilot-instructions.md` in your repo, or into VS Code's custom instructions (`Copilot` → `Configure` → `Custom Instructions`).
+
+Each `SKILL.md` is self-contained — paste the content below the frontmatter directly:
+
+```bash
+# Example: add the flow skill to Copilot instructions
+tail -n +6 skills/flow/SKILL.md >> .github/copilot-instructions.md
+```
+
+Copilot will follow the skill's steps when you describe the task in chat (`"implement issue #123 using flow"`).
+
+### Cursor
+
+Add skills as [Cursor rules](https://docs.cursor.com/context/rules) in `.cursor/rules/`:
+
+```bash
+# Copy a skill as a Cursor rule
+cp skills/flow/SKILL.md .cursor/rules/flow.mdc
+cp skills/write-plan/SKILL.md .cursor/rules/write-plan.mdc
+```
+
+Remove the YAML frontmatter block (`---` ... `---`) from each file — Cursor doesn't use it. Reference the rule in chat: `"use @flow to implement this"`.
+
+### Gemini CLI
+
+Add skills to your `GEMINI.md` file (project-level) or `~/.gemini/GEMINI.md` (user-level):
+
+```bash
+# Append a skill to project GEMINI.md
+echo "" >> GEMINI.md
+cat skills/flow/SKILL.md >> GEMINI.md
+```
+
+Or maintain them as separate files and reference them in `GEMINI.md`:
+
+```markdown
+# Skills
+@skills/flow/SKILL.md
+@skills/write-plan/SKILL.md
+```
+
+### Any other tool
+
+Every skill is a plain markdown file. Paste the content (minus the YAML frontmatter) into whatever context window your tool uses — system prompt, instructions file, or inline context. The skills are written to be self-contained: no tool-specific syntax, no imports.
 
 ---
 
