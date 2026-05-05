@@ -1,6 +1,8 @@
-# ai-engineering-plugin
+# AI Engineering Plugin by Owen Franssen
 
-A Claude Code plugin built around **flow** — an orchestrator-plus-agents pattern for implementing features with parallel autonomous agents, zero trust in agent self-reporting, and per-task verification before merge.
+A collection of skills for AI-assisted engineering — built around **flow**, an orchestrator-plus-agents pattern for implementing features with parallel autonomous agents, zero trust in agent self-reporting, and per-task verification before merge.
+
+Skills are plain markdown files. They're packaged as a [Claude Code](https://claude.ai/code) plugin for one-line install, but the files work with any AI tool that accepts system prompt or instruction files — Cursor rules, Windsurf instructions, Copilot prompts, or plain context passed to any model.
 
 ## The core idea: flow
 
