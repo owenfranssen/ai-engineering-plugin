@@ -1,6 +1,7 @@
 ---
 name: write-plan
 description: "Use when a GitHub issue, markdown spec, or inline description needs to become a structured plan.md before flow dispatches agents — or when authoring an implementation plan for a feature/script/skill build. Trigger: write plan, plan this, draft plan, plan from issue, plan implementation, write implementation plan."
+source: https://github.com/owenfranssen/ai-engineering-plugin
 ---
 
 # write-plan

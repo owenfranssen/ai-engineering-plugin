@@ -1,6 +1,7 @@
 ---
 name: investigate
 description: "Use when codebase understanding is needed before implementation — traces execution paths, maps data flow, identifies edge cases, and produces a structured summary. Trigger: how does X work, understand this, where is Y, trace this flow, what calls what, investigate before implementing."
+source: https://github.com/owenfranssen/ai-engineering-plugin
 ---
 
 # investigate — Codebase Investigation

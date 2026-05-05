@@ -1,6 +1,7 @@
 ---
 name: documentation-and-adrs
 description: "Use when making an architectural decision, choosing between competing approaches, or adding context that future-you or future agents will need to understand why the codebase is the way it is. Also use when a design decision has come up twice across sessions, or when you find commented code with no explanation of intent. Trigger: write an ADR, document this decision, add an ADR, explain why we chose, record this decision, document the architecture."
+source: https://github.com/owenfranssen/ai-engineering-plugin
 ---
 
 # Documentation and ADRs
