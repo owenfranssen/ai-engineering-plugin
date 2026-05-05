@@ -1,6 +1,7 @@
 ---
 name: flow
 description: "Use when implementing a GitHub issue, markdown spec, or inline description through an orchestrator-plus-agents architecture — dispatches tasks in parallel, reviews each agent's output, squash-merges to the feature branch, and raises a PR when all tasks pass. Trigger: flow, run this in agents, dispatch agents, implement with agents, orchestrate this, flow issue 123."
+source: https://github.com/owenfranssen/ai-engineering-plugin
 ---
 
 # flow

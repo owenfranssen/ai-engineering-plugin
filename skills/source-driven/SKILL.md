@@ -1,6 +1,7 @@
 ---
 name: source-driven
 description: "Use when implementing any framework-specific or library-specific pattern — verify against official docs for the exact installed version before writing code. LLM training data goes stale; this skill enforces a \"check the source\" discipline across all projects. Trigger: implement framework pattern, use library API, \"how do I use X\", version-specific behaviour."
+source: https://github.com/owenfranssen/ai-engineering-plugin
 ---
 
 # source-driven — Source-Driven Development
