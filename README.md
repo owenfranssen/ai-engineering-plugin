@@ -1,10 +1,10 @@
-# owen-plugin
+# ai-engineering-plugin
 
-A Claude Code plugin for AI-assisted engineering — built around **flow**, an orchestrator-plus-agents pattern for implementing features with parallel autonomous agents.
+A Claude Code plugin built around **flow** — an orchestrator-plus-agents pattern for implementing features with parallel autonomous agents, zero trust in agent self-reporting, and per-task verification before merge.
 
 ## The core idea: flow
 
-Most AI-assisted development uses a single agent that reasons through a task sequentially. Flow does something different: it breaks an implementation into discrete tasks, dispatches them to parallel agents, reviews each result before merging, and raises a PR when all tasks pass verification.
+Most AI-assisted development uses a single agent that reasons through a task sequentially. Flow does something different: it breaks an implementation into discrete tasks, dispatches them to parallel agents, and independently verifies each result before squash-merging — regardless of what the agent claims it did.
 
 ```
 spec / issue / description
@@ -15,9 +15,9 @@ spec / issue / description
     ┌────┴────┐
  agent 1   agent 2      ← parallel execution (non-overlapping files)
     └────┬────┘
-   flow-review          ← AC coverage check + scope guard before each merge
+   flow-review          ← reads the diff, not the agent's report — PASS / FAIL / FLAG
          │
-        PR              ← raised when all tasks pass
+        PR              ← raised only when all tasks pass independently
 ```
 
 The three skills work together:
@@ -26,7 +26,7 @@ The three skills work together:
 |-------|------|
 | `write-plan` | Turns a spec into a structured `plan.md` with tasks, ACs, file scopes, and verify commands |
 | `flow` | Orchestrator — dispatches agents, calls `flow-review`, squash-merges verified work, raises PR |
-| `flow-review` | Reviews each agent's diff against ACs before merge — returns PASS / FAIL / FLAG |
+| `flow-review` | Reads the diff against ACs — does not trust the agent's self-assessment |
 
 ### Why this architecture?
 
@@ -38,6 +38,23 @@ The three skills work together:
 
 **Decision surfacing.** Agents flag decisions (new deps, schema changes, security boundaries) rather than deciding silently. The orchestrator surfaces flags to the user before re-dispatching.
 
+### Zero-trust model
+
+Agents are optimistic narrators. Given the chance, they will:
+- Report all ACs as passing when some have no implementation
+- Drift outside their file scope without flagging it
+- Make architectural decisions (new dep, schema change) without stopping
+
+Flow is built on the assumption that you can't trust what an agent says it did — only what the diff shows.
+
+`flow-review` operationalises this:
+- **Reads the diff directly.** The agent's "ACs MET" section is advisory. `flow-review` cross-checks every AC against the actual code change.
+- **Scope violations are mechanical FAIL.** A file outside `files-allowed` is a hard stop, not a judgment call. The rule exists precisely because agents exercise bad judgment about scope under pressure.
+- **Verify runs independently.** Even if the agent ran the test suite and reported it passing, `flow-review` runs it again. A clean run by the agent is not evidence — a clean run after the fact is.
+- **Decision flags are non-negotiable.** When an agent hits a flag trigger (new dep, schema change, security boundary), it stops and posts the question. The orchestrator never auto-resolves flags on the agent's behalf.
+
+The result: you get parallel execution speed without trusting any single agent to stay in bounds.
+
 ---
 
 ## Skills
@@ -45,8 +62,9 @@ The three skills work together:
 | Skill | Purpose |
 |-------|---------|
 | `flow` | Orchestrate multi-agent task flows with parallel execution and per-task review |
-| `flow-review` | Review agent output against ACs before squash-merge |
+| `flow-review` | Verify agent output against ACs before squash-merge — reads diff, not agent report |
 | `write-plan` | Turn a spec or GitHub issue into a structured plan.md for flow |
+| `investigate` | Structured codebase investigation before implementation — traces execution paths, maps data flow |
 | `code` | Project-agnostic code writer — TDD, quality gates, read-before-write |
 | `context-engineering` | Structure and load project context for AI-assisted sessions |
 | `documentation-and-adrs` | Write and maintain ADRs and technical documentation |
@@ -92,13 +110,13 @@ Produces `~/.flow/state/{id}/plan.md` for review before dispatch.
 ## Installation
 
 ```bash
-claude plugin add owenfranssen/owen-plugin
+claude plugin add owenfranssen/ai-engineering-plugin
 ```
 
 Or to install at user scope (survives across all repos):
 
 ```bash
-claude plugin add owenfranssen/owen-plugin --scope user
+claude plugin add owenfranssen/ai-engineering-plugin --scope user
 ```
 
 ---
@@ -119,11 +137,11 @@ claude plugin add owenfranssen/owen-plugin --scope user
 
 For every completed task, `flow-review` checks:
 
-1. **Scope** — every file in the diff is in `files-allowed`
-2. **AC coverage** — diff contains implementation evidence for each AC
+1. **Scope** — every file in the diff is in `files-allowed` (automatic FAIL otherwise)
+2. **AC coverage** — diff contains positive implementation evidence for each AC
 3. **Edge cases** — if the task named edge cases, the agent addressed them
-4. **Decision flags** — any unresolved flags surface to the user
-5. **Verify output** — runs task verify commands if the agent didn't
+4. **Decision flags** — any unresolved flags surface to the user before re-dispatch
+5. **Verify output** — runs task verify commands independently
 
 Returns `{ "verdict": "PASS | FAIL | FLAG", "acs": [...], "reason": "..." }`.
 
@@ -150,6 +168,10 @@ When all tasks pass, flow raises a PR with:
 ---
 
 ## Other skills
+
+### `investigate`
+
+Structured codebase investigation before writing a plan. Dispatches a `general-purpose` agent to trace the system — entry point to storage, through every layer — and returns structured findings: data flow, key files, edge cases, what to be careful of. For multi-service systems, dispatches one agent per service in parallel. Never produces code changes, only understanding.
 
 ### `code`
 
