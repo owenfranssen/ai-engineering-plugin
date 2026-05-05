@@ -1,6 +1,7 @@
 ---
 name: code
 description: "Use for any code writing, editing, fixing, or refactoring task — follows TDD, reads before writing, enforces no-duplication, security, and type safety, and runs quality gates. Project-agnostic. Trigger: write code, implement, add feature, fix bug, refactor, create component, update service, add endpoint, change field, edit this file, add validation, create a hook, write a migration, update the model, update the schema, fix the test, add this logic, write the service, apply this change, change this function, debug this, make it work."
+source: https://github.com/owenfranssen/ai-engineering-plugin
 ---
 
 # /code — General Purpose Code Writer

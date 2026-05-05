@@ -1,6 +1,7 @@
 ---
 name: flow-review
 description: Use when flow's orchestrator needs to verify an agent's task completion before squash-merging — checks AC coverage against the agent's diff and report. Called by flow; not typically invoked directly. Called by flow; not typically invoked directly.
+source: https://github.com/owenfranssen/ai-engineering-plugin
 ---
 
 # flow-review

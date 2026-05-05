@@ -1,6 +1,7 @@
 ---
 name: context-engineering
 description: "Use when starting a new session on a personal project, when agent output quality degrades (wrong patterns, hallucinated APIs, ignoring conventions), when switching between tasks or project areas, or when setting up a new project for AI-assisted development. Trigger: \"start a new session\", \"set up context\", \"agent is going off track\", \"load project context\", \"context setup\", \"rules file\"."
+source: https://github.com/owenfranssen/ai-engineering-plugin
 ---
 
 # Context Engineering
